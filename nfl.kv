@@ -1,0 +1,52 @@
+#: import random random
+
+
+<ColorLabel@Label>:
+    canvas:
+        Color:
+            rgba: (random.random(), random.random(), random.random(), 0.5)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<PoolGrid>:
+    canvas:
+        Color:
+            rgba: (random.random(), random.random(), random.random(), 0.5)
+        Rectangle:
+            size: self.size
+            pos: self.pos 
+
+<NFLWidget>:
+    cols: 2
+    rows: 2
+    spacing: 10
+    padding: 10
+    
+    Button:
+        text: 'Welcome to the Pyrty!'
+        size_hint: (0.2, 0.2)
+        on_press: poolnumrow.shuffle_pool_nums(), poolnumcol.shuffle_pool_nums()
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: (0.8, 0.2)
+        spacing: 5
+        ColorLabel:
+            text: 'Team 1'
+        PoolNumberRC:
+            id: poolnumrow
+            orientation: 'horizontal'
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: (0.2, 0.8)
+        spacing: 5
+        ColorLabel:
+            text: 'Team 2'
+        PoolNumberRC:
+            id: poolnumcol
+            orientation: 'vertical'
+    
+    PoolGrid:
+        size_hint: (0.8, 0.8)

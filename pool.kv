@@ -1,0 +1,92 @@
+#: kivy 1.10.1
+<kText@TextInput>:
+	font_size: 32
+	multiline: False
+	text: '0'
+	size_hint_y: None 
+	height: 50
+
+
+<PoolLayout>:
+	id: pool_layout
+	display: output1
+	orientation: 'horizontal'
+	canvas:
+		Rectangle:
+			pos: self.center_x - 2.5, 0
+			size: 5, self.height
+	BoxLayout:
+		orientation: 'vertical'
+		Label:
+			font_size: 50
+			top: root.top - 25
+			text: 'Patriots'
+		BoxLayout:
+			orientation: 'horizontal'
+			Label:
+				font_size: 32
+				text: 'Pool Number'
+			kText:
+				id: t1_pool_number
+				on_text: pool_layout.update_pool_number(t1_pool_number.text)
+		BoxLayout:
+			orientation: 'horizontal'
+			Label:
+				font_size: 32
+				text: 'Current Score'
+			kText:
+				id: t1_current_score
+				on_text: pool_layout.update_cur_score(t1_pool_number.text)
+
+		BoxLayout:
+			orientation: 'horizontal'
+			Button:
+				font_size: 32
+				text: 'Plays Needed to Win'
+				on_touch_up: pool_layout.calculate_plays(t1_current_score.text, t1_pool_number.text)
+
+		BoxLayout:
+			orientation: 'vertical'
+			Label:
+				id: output1
+				size: self.texture_size
+				font_size: 22
+				text: ''
+
+
+	BoxLayout:
+		orientation: 'vertical'
+		Label:
+			font_size: 50
+			top: root.top - 50
+			text: 'Rams'
+		BoxLayout:
+			orientation: 'horizontal'
+			Label:
+				font_size: 32
+				text: 'Pool Number'
+			kText:
+				id: t2_pool_number
+				on_text: pool_layout.update_pool_number(t2_pool_number.text)
+		BoxLayout:
+			orientation: 'horizontal'
+			Label:
+				font_size: 32
+				text: 'Current Score'
+			kText:
+				id: t2_current_score
+				on_text: pool_layout.update_cur_score(t2_pool_number.text)
+
+		BoxLayout:
+			orientation: 'horizontal'
+			Button:
+				font_size: 32
+				text: 'Plays Needed'
+				on_touch_up: pool_layout.calculate_plays(t2_current_score.text, t2_pool_number.text)
+
+		BoxLayout:
+			orientation: 'vertical'
+			Label:
+				id: output2
+				font_size: 22
+				text: ''
