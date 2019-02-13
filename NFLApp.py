@@ -16,37 +16,37 @@ class NFLApp(App):
 class NFLWidget(GridLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-    def do_something(self, *args, **kwargs):
-        print("In NFLWidget.do_something")
-        for arg in args:
-            print(f"\tPrinting from NFLWidget.do_something, {arg}")
-        for kwarg in kwargs:
-            print(f"\tPrinting from NFLWidget.do_something, {kwarg}")
-        print()
-
+        
     def do_calc(self, button):
         print(f'------NFLWidget.do_calc')
-        row = button.row
-        col = button.col
+        row = str(button.row)
+        col = str(button.col)
         team1_num = self.ids.poolnumrow.children
         #team2_num = self.ids.poolnumcol.col.text
-        print(f'\tbutton: {row, col}')
+##        print(f'\tbutton: {row, col}')
+##
+##        # NFLWidget has 4 children
+##        for child in self.children:
+##            print('\tself.children', child)
+##
+##        # NFLWidget holds 4 ids (defined in kv)
+##        for child in self.ids:
+##            print('\tself.ids', child)
+##            
+##        # poolnumrow is a child id.
+##        # poolnumrow has all the same properties as NFLWidget.
+##        for prop in self.ids.poolnumrow.properties():
+##            print('\tself.ids.poolnumrow.proprties()', prop)
 
-        for child in self.children:
-            print('\tself.children', child)
-        for child in self.ids:
-            print('\tself.ids', child)
+        # poolnumrow has 10 Labels as children.
         for child in self.ids.poolnumrow.children:
-            print('\tself.ids.poolnumrow.children', child)
-        for child in self.ids.poolnumrow.children:
-            print('\tself.ids.poolnumrow.children', child.id, child.text)
+            print(f'\tself.ids.poolnumrow.children\n \t{child, child.id, child.text}')
 
-        print(f'\tretrieving poolnumrow.text: {self.ids.poolnumrow.children[row].text}')
+        self.ids.poolnumrow.print_everything()
+        team1_pool_num = self.ids.poolnumrow.return_pool_num(col)
+        team2_pool_num = self.ids.poolnumcol.return_pool_num(row)
 
-
-
-class PoolNumberRC(BoxLayout):
+class PoolNumberRC(GridLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         for box in range(10):
@@ -56,25 +56,27 @@ class PoolNumberRC(BoxLayout):
     def shuffle_pool_nums(self):
         pool_nums = [i for i in range(10)]
         random.shuffle(pool_nums)
-        for i, (label, pool_num) in enumerate(zip(reversed(self.children),
-                                                  pool_nums)):
+        for i, label in enumerate(reversed(self.children)):
             label.id = str(i)
-            label.text = str(pool_num)
-            #print(f'id: {label.id}, text: {label.text}')
+            label.text = str(pool_nums[i])
         self.print_pool_nums()
 
     def print_pool_nums(self):
         for label in self.children:
-            print('{label.id}, {label.text}')
+            print(f'id: {label.id}, text: {label.text}')
 
-    def return_pool_nums(self, *args):
-        print("In PoolNumberRC.return_pool_nums")
-        for arg in args:
-            print(f"\tPrinting from PoolGridButton.on_press, {arg}")
+    def return_pool_num(self, val):
+        print("------PoolNumberRC.return_pool_nums")
         for child in self.children:
-            print(child)
-        print(f'{self.row, self.col}')
+            if child.id == val:
+                print(f'\tfound val: {val} child.id: {child.id} child.text:{child.text}')
+                return child.text
         print()
+
+    def print_everything(self):
+        print("------PoolNumberRC.print_everything")
+        print('\t', self.ids)
+
 
 
 class PoolGrid(GridLayout):
@@ -93,7 +95,7 @@ class PoolGrid(GridLayout):
                 PoolGrid.add_widget(self, b)
 
     def send_button(self, button):
-        print("In PoolGrid.send_request")
+        print("------PoolGrid.send_button")
         print(button, self.parent)
         self.parent.do_calc(button)
 
@@ -106,7 +108,7 @@ class PoolGridButton(Button):
         super().__init__(**kwargs)
 
     def on_press(self, *args, **kwargs):
-        print("In PoolGridButton.on_press")
+        print("------PoolGridButton.on_press")
         for arg in args:
             print(f"\tPrinting from PoolGridButton.on_press, {arg}")
         for kwarg in kwargs:
