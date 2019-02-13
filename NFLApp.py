@@ -26,17 +26,23 @@ class NFLWidget(GridLayout):
         print()
 
     def do_calc(self, button):
+        print(f'------NFLWidget.do_calc')
         row = button.row
         col = button.col
         team1_num = self.ids.poolnumrow.children
         #team2_num = self.ids.poolnumcol.col.text
-        print(f'NFLWidget.do_calc button: {row, col}')
+        print(f'\tbutton: {row, col}')
+
         for child in self.children:
-            print(child)
+            print('\tself.children', child)
         for child in self.ids:
-            print(child)
+            print('\tself.ids', child)
         for child in self.ids.poolnumrow.children:
-            print(child)
+            print('\tself.ids.poolnumrow.children', child)
+        for child in self.ids.poolnumrow.children:
+            print('\tself.ids.poolnumrow.children', child.id, child.text)
+
+        print(f'\tretrieving poolnumrow.text: {self.ids.poolnumrow.children[row].text}')
 
 
 
@@ -54,7 +60,12 @@ class PoolNumberRC(BoxLayout):
                                                   pool_nums)):
             label.id = str(i)
             label.text = str(pool_num)
-            print(f'id: {label.id}, text: {label.text}')
+            #print(f'id: {label.id}, text: {label.text}')
+        self.print_pool_nums()
+
+    def print_pool_nums(self):
+        for label in self.children:
+            print('{label.id}, {label.text}')
 
     def return_pool_nums(self, *args):
         print("In PoolNumberRC.return_pool_nums")
