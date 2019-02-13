@@ -69,7 +69,7 @@ class PoolNumberRC(GridLayout):
         print("------PoolNumberRC.return_pool_nums")
         for child in self.children:
             if child.id == val:
-                print(f'\tfound val: {val} child.id: {child.id} child.text:{child.text}')
+                print(f'\tfound val:{val} child.id:{child.id} child.text:{child.text}')
                 return child.text
         print()
 
