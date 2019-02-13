@@ -26,7 +26,7 @@
     Button:
         text: 'Welcome to the Pyrty!'
         size_hint: (0.2, 0.2)
-        on_press: poolnumrow.shuffle_pool_nums(), poolnumcol.shuffle_pool_nums()
+        on_press: poolnumrow.shuffle_pool_nums(), poolnumcol.shuffle_pool_nums(), print(root.ids)
 
     BoxLayout:
         orientation: 'vertical'
@@ -49,4 +49,5 @@
             orientation: 'vertical'
     
     PoolGrid:
+        id: poolgrid
         size_hint: (0.8, 0.8)
