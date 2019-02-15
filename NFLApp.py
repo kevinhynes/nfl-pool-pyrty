@@ -20,7 +20,7 @@ class NFLWidget(GridLayout):
     # Python class level properties' names correspond to Kivy rule level properties
     team1 = StringProperty("New England Patriots")
     team2 = StringProperty("Los Angeles Rams")
-    team1_score = NumericProperty(0)
+    team1_score = StringProperty('0')
     team2_score = NumericProperty(0)
 
     def __init__(self, **kwargs):
@@ -44,10 +44,10 @@ class NFLWidget(GridLayout):
 
     def change_score(self, team):
         popup = ScoreInputPopup(title=team + " Score")
+        popup.content.popuptextinput.bind(text=self.setter('team1_score'))
         popup.open()
         team1_score = popup.score
         print(team1_score)
-        
 
 
 class PoolNumberRC(GridLayout):
@@ -126,9 +126,11 @@ class PoolGridButton(Button):
 Builder.load_file('scoreinputpopup.kv')
 class ScoreInputPopup(Popup):
     score = NumericProperty(0)
+
     def on_enter(self, instance):
         print('User pressed enter on ', instance, ' with ', instance.text)
         score = instance.text
+        return score
 
 
 class ScoreInputPopupTextInput(TextInput):

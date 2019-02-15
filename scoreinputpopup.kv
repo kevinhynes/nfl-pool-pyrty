@@ -1,13 +1,14 @@
 <ScoreInputPopup>:
-	
 	size_hint: (None, None)
 	width: 300
 	height: 300
 	AnchorLayout:
+		popuptextinput: popuptext_input
 		ScoreInputPopupTextInput:
+			id: popuptext_input
 			text: '0'
 			size_hint: (0.3, 0.3)
 			multiline: False
-			input_filter: 'int'
-			#focus: True
+			#input_filter: 'int'
+			focus: True
 			#on_text_validate: root.on_enter(self)
