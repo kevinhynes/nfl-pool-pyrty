@@ -1,15 +1,14 @@
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
-from kivy.properties import NumericProperty, StringProperty, ObjectProperty
+from kivy.properties import NumericProperty, StringProperty, ObjectProperty, ListProperty
 from kivy.lang.builder import Builder
 import random
-
+import team_data
 
 class NFLApp(App):
     def build(self):
@@ -17,14 +16,27 @@ class NFLApp(App):
 
 
 class NFLWidget(GridLayout):
-    # Python class level properties' names correspond to Kivy rule level properties
-    team1 = StringProperty("New England Patriots")
-    team2 = StringProperty("Los Angeles Rams")
+    # Python class level attributes' names correspond to Kivy rule level attributes
+    get_team1_name = random.choice(team_data.team_list)
+    get_team1_colors = team_data.team_colors[get_team1_name]
+    get_team2_name = random.choice(team_data.team_list)
+    get_team2_colors = team_data.team_colors[get_team2_name]
+    team1 = StringProperty(get_team1_name)
+    team2 = StringProperty(get_team2_name)
+    team1_colors = ListProperty(get_team1_colors)
+    team2_colors = ListProperty(get_team2_colors)
     team1_score = StringProperty('0')
-    team2_score = NumericProperty(0)
+    team2_score = StringProperty('0')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        #team1_colors = team_colors.team_colors_dict[self.team1]['rgb']
+        #self.team1_colors = team1_colors
+        #team2_colors = team_colors.team_colors_dict[self.team2]['rgb']
+        print(f'Team 1: {self.team1}')
+        print(f'Team 1 colors: {self.team1_colors}')
+        print(f'Team 2: {self.team2}')
+        print(f'Team 2 colors: {self.team2_colors}')
 
     def do_calc(self, button):
         print(f'------NFLWidget.do_calc')
@@ -42,12 +54,17 @@ class NFLWidget(GridLayout):
         print(
             f'\tNFLWidget received pool numbers \n\tteam1:{team1_pool_num} team2:{team2_pool_num}')
 
-    def change_score(self, team):
+    def change_score_with_popup(self, team):
         popup = ScoreInputPopup(title=team + " Score")
-        popup.content.popuptextinput.bind(text=self.setter('team1_score'))
+        # Popup.content stores all objects below title of Popup window
+        # If Popup attribute is stored at class-level, use Popup.attribute_name
+        # If Popup attribute is stored below class-level, use Popup.content.attribute_name
+        if team == self.team1:
+            popup.content.popuptextinput.bind(text=self.setter('team1_score'))
+        elif team == self.team2:
+            popup.content.popuptextinput.bind(text=self.setter('team2_score'))
         popup.open()
-        team1_score = popup.score
-        print(team1_score)
+        print(f'team1_score:{self.team1_score}')
 
 
 class PoolNumberRC(GridLayout):
@@ -88,7 +105,7 @@ class PoolNumberRC(GridLayout):
 
 class PoolGrid(GridLayout):
     def __init__(self, **kwargs):
-        #super(PoolGrid, self).__init__(**kwargs)
+        #super(PoolGrid, self).__init__(**kwargs) # Python 2 syntax 
         super().__init__(**kwargs)
         self.rows = 10
         self.cols = 10
@@ -111,9 +128,6 @@ class PoolGridButton(Button):
     row = NumericProperty(0)
     col = NumericProperty(0)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
     def on_press(self, *args, **kwargs):
         print("------PoolGridButton.on_press")
         for arg in args:
@@ -125,18 +139,15 @@ class PoolGridButton(Button):
 
 Builder.load_file('scoreinputpopup.kv')
 class ScoreInputPopup(Popup):
-    score = NumericProperty(0)
+    team_score = StringProperty('0')
 
-    def on_enter(self, instance):
-        print('User pressed enter on ', instance, ' with ', instance.text)
-        score = instance.text
-        return score
+    def validate_score(self, team_score):
+        for c in team_score:
+            if c not in '0123456789':
+                print("Non-integer input for team score")
+                return
+        self.team_score = team_score
 
-
-class ScoreInputPopupTextInput(TextInput):
-    def on_text_validate(self):
-        print('hallo')
-        ScoreInputPopup().on_enter(self)
 
 if __name__ == '__main__':
     NFLApp().run()

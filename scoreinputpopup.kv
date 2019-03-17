@@ -1,14 +1,33 @@
 <ScoreInputPopup>:
-	size_hint: (None, None)
-	width: 300
-	height: 300
-	AnchorLayout:
-		popuptextinput: popuptext_input
-		ScoreInputPopupTextInput:
-			id: popuptext_input
-			text: '0'
-			size_hint: (0.3, 0.3)
-			multiline: False
-			#input_filter: 'int'
-			focus: True
-			#on_text_validate: root.on_enter(self)
+    size_hint: (None, None)
+    width: 300
+    height: 300
+
+
+    BoxLayout:
+        orientation: 'vertical'
+        popuptextinput: popuptext_input
+        AnchorLayout:
+            TextInput:
+                id: popuptext_input
+                text: '0'
+                size_hint: (0.3, 0.3)
+                multiline: False
+                input_filter: 'int'
+                focus: True
+                # on_text_validate is fired once TextInput loses focus...?
+                on_text_validate: root.validate_score(self.text)
+
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: 20
+            spacing: 20
+            Button:
+                
+                text: "Ok"
+                on_press: root.dismiss()
+            Button:
+                text: "Cancel"
+                on_press: root.dismiss()
+            
+            

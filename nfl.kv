@@ -1,26 +1,26 @@
 #: import random random
+#: import team_data team_data
 
+#<ScoreButton@Button>:
+#    canvas:
+#        Color:
+#            rgba: (random.random(), random.random(), random.random(), 0.5)
+#        Rectangle:
+#            size: self.size
+#            pos: self.pos
 
-<ScoreButton@Button>:
-    canvas:
-        Color:
-            rgba: (random.random(), random.random(), random.random(), 0.5)
-        Rectangle:
-            size: self.size
-            pos: self.pos
-
-<ColorLabel@Label>:
-    canvas:
-        Color:
-            rgba: (random.random(), random.random(), random.random(), 0.5)
-        Rectangle:
-            size: self.size
-            pos: self.pos
+#<ColorLabel@Label>:
+#    canvas:
+#        Color:
+#            rgba: (random.random(), random.random(), random.random(), 0.5)
+#        Rectangle:
+#            size: self.size
+#            pos: self.pos
 
 <PoolGrid>:
     canvas:
         Color:
-            rgba: (random.random(), random.random(), random.random(), 0.5)
+            rgba: (.9, .9, .9, 0.5)
         Rectangle:
             size: self.size
             pos: self.pos
@@ -44,13 +44,12 @@
         Rectangle:
             size: self.size
             pos: self.pos
-    
-    
+
     Button:
         id: shuffle_btn
         text: 'Welcome to the Pyrty!'
         size_hint: (0.2, 0.2)
-        on_press: poolnumrow.shuffle_pool_nums(), poolnumcol.shuffle_pool_nums(), print("LOL BLASTED IT")
+        on_press: poolnumrow.shuffle_pool_nums(), poolnumcol.shuffle_pool_nums()
 
     BoxLayout:
         orientation: 'vertical'
@@ -62,24 +61,41 @@
                 size_hint_x: 0.2
                 size: self.size
                 pos: self.pos
-                source: './images/pats_logo.png'   
+                source: './png_images/' + team_data.team_logos[root.team1]
                 allow_stretch: True
                 keep_ratio: True
-            ColorLabel:
+
+            Label:
                 text: root.team1
                 size_hint_x: 0.6
-            
-            ScoreButton:
+                canvas.after:
+                    Color:
+                        rgba: tuple(root.team1_colors[0] + [0.5])
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Button:
                 text: str(root.team1_score)
                 size_hint_x: 0.2
-                on_press: root.change_score(root.team1)
-                
-                    
+                on_press: root.change_score_with_popup(root.team1)
+                canvas:
+                    Color:
+                        rgba: tuple(root.team1_colors[1] + [0.5])
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
         PoolNumberRC:
             id: poolnumrow
             rows: 1
             cols: 10
             size_hint_y: 0.3
+            canvas:
+                Color:
+                    rgba: tuple(root.team1_colors[1] + [0.5])
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
 
     BoxLayout:
         orientation: 'horizontal'
@@ -91,23 +107,41 @@
                 size_hint_y: 0.2
                 size: self.size
                 pos: self.pos
-                source: './images/rams_logo.png'   
+                source: './png_images/' + team_data.team_logos[root.team2]
                 allow_stretch: True
                 keep_ratio: True
-            ColorLabel:
+            Label:
                 text: root.team2
                 size_hint_y: 0.6
-            
-            ScoreButton:
+                canvas:
+                    Color:
+                        rgba: tuple(root.team2_colors[0] + [0.5])
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Button:
                 text: str(root.team2_score)
                 size_hint_y: 0.2
-                on_press: root.change_score(root.team2)
+                on_press: root.change_score_with_popup(root.team2)
+                canvas:
+                    Color:
+                        rgba: tuple(root.team2_colors[1] + [0.5])
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
         
         PoolNumberRC:
             id: poolnumcol
             rows: 10
             cols: 1
             size_hint_x: 0.3
+            canvas:
+                Color:
+                    rgba: tuple(root.team2_colors[1] + [0.5])
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
     
     PoolGrid:
         id: poolgrid
