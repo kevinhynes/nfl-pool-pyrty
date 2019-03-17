@@ -125,3 +125,4 @@ dmypy.json
 # This project
 script.py
 output.py
+.idea/

@@ -24,14 +24,14 @@
         Rectangle:
             size: self.size
             pos: self.pos
-
-<PoolNumberRC>:
-    canvas:
-        Color:
-            rgba: (random.random(), random.random(), random.random(), 0.5)
-        Rectangle:
-            size: self.size
-            pos: self.pos
+#
+#<PoolNumberRC>:
+#    canvas:
+#        Color:
+#            rgba: (random.random(), random.random(), random.random(), 0.5)
+#        Rectangle:
+#            size: self.size
+#            pos: self.pos
 
 <NFLWidget>:
     cols: 2
@@ -45,11 +45,19 @@
             size: self.size
             pos: self.pos
 
+
     Button:
-        id: shuffle_btn
-        text: 'Welcome to the Pyrty!'
         size_hint: (0.2, 0.2)
+        id: shuffle_btn
+#        text: 'Welcome to the Pyrty!'
         on_press: poolnumrow.shuffle_pool_nums(), poolnumcol.shuffle_pool_nums()
+        Image:
+            size: self.size
+            center: self.parent.center
+            source: './png_images/nfl_logo.png'
+            allow_stretch: True
+            keep_ratio: True
+
 
     BoxLayout:
         orientation: 'vertical'
